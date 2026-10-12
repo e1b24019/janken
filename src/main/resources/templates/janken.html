@@ -1,18 +1,31 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-
 <head>
   <meta charset="UTF-8">
   <title>Janken</title>
 </head>
 
 <body>
-  <h1>じゃんけんゲーム</h1>
+  <h1>じゃんけん</h1>
 
-  <!-- username が Model に格納されているときだけ表示される -->
+  <!-- タスク1：ユーザ名表示 -->
   <div th:if="${username != null}">
     <p>Hi <span th:text="${username}"></span></p>
+  </div>
+
+  <!-- タスク2：対戦用リンク（追加） -->
+  <ul>
+    <li><a href="/janken?hand=Gu">グー</a></li>
+    <li><a href="/janken?hand=Choki">チョキ</a></li>
+    <li><a href="/janken?hand=Pa">パー</a></li>
+  </ul>
+
+  <!-- タスク2：対戦結果表示（追加） -->
+  <div th:if="${janken != null}">
+    <p>あなたの手： <span th:text="${janken.myHand}"></span></p>
+    <p>相手の手： <span th:text="${janken.cpuHand}"></span></p>
+    <p>結果： <span th:text="${janken.result}"></span></p>
   </div>
 
 </body>
