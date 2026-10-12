@@ -1,1 +1,19 @@
-Hello GitHub Flow!
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Janken - Index</title>
+</head>
+
+<body>
+  <h1>じゃんけんアプリ</h1>
+
+  <form action="/janken" method="post">
+    <label for="username">ユーザ名：</label>
+    <input type="text" id="username" name="username" required>
+    <button type="submit">入室</button>
+  </form>
+</body>
+
+</html>
