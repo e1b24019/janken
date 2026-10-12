@@ -6,22 +6,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import oit.is.z3694.kaizi.janken.model.Janken;
+
 @Controller
 public class JankenController {
 
-  /**
-   * AC2: GETアクセス時 (/janken に直接アクセス)
-   * Model に username を追加しないため、「Hi taro」は表示されない
-   */
   @GetMapping("/janken")
-  public String jankenGet() {
+  public String jankenGet(@RequestParam(name = "hand", required = false) String hand, ModelMap model) {
+    // ★追加：クエリパラメータ ?hand=... が渡された場合の処理
+    if (hand != null) {
+      Janken janken = new Janken(hand);
+      model.addAttribute("janken", janken);
+    }
     return "janken.html";
   }
 
-  /**
-   * AC1: POSTアクセス時 (index.html からフォーム送信)
-   * Model に username を登録して渡すため、「Hi taro」が表示される
-   */
   @PostMapping("/janken")
   public String jankenPost(@RequestParam("username") String username, ModelMap model) {
     model.addAttribute("username", username);
