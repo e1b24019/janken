@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+  <meta charset="UTF-8">
+  <title>Janken</title>
+</head>
+
+<body>
+  <h1>じゃんけんゲーム</h1>
+
+  <!-- username が Model に格納されているときだけ表示される -->
+  <div th:if="${username != null}">
+    <p>Hi <span th:text="${username}"></span></p>
+  </div>
+
+</body>
+
+</html>
