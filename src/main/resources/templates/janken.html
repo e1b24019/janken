@@ -7,19 +7,34 @@
 </head>
 
 <body>
-  <!-- ログアウトリンク -->
+  <!-- ログアウトリンク (AC1用) -->
   <a href="/logout">ログアウト</a>
 
   <h1>Janken GAME!</h1>
+
+  <!-- エントリーユーザー一覧の表示 (Task 2 AC2/AC3用) -->
+  <h2>エントリー</h2>
+  <ul>
+    <li th:each="user : ${entry.users}">[[${user}]]</li>
+  </ul>
 
   <!-- ログインユーザー名の表示 -->
   <p>Hi <span sec:authentication="name"></span></p>
 
   <!-- じゃんけんの手のリンク -->
-  <a href="/janken?hand=Gu">ぐー</a>
-  <a href="/janken?hand=Choki">ちょき</a>
-  <a href="/janken?hand=Pa">ぱー</a>
+  <ul>
+    <li><a href="/janken?hand=Gu">ぐー</a></li>
+    <li><a href="/janken?hand=Choki">ちょき</a></li>
+    <li><a href="/janken?hand=Pa">ぱー</a></li>
+  </ul>
+
+  <!-- じゃんけんの対戦結果表示 -->
+  <div th:if="${janken != null}">
+    <p>あなたの手： <span th:text="${janken.myHand}"></span></p>
+    <p>相手の手： <span th:text="${janken.cpuHand}"></span></p>
+    <p>結果： <span th:text="${janken.result}"></span></p>
+  </div>
+
 </body>
 
 </html>
-
