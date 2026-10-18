@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
   <meta charset="UTF-8">
@@ -8,13 +7,18 @@
 </head>
 
 <body>
-  <h1>じゃんけんゲーム</h1>
+  <!-- ログアウトリンク -->
+  <a href="/logout">ログアウト</a>
 
-  <!-- username が Model に格納されているときだけ表示される -->
-  <div th:if="${username != null}">
-    <p>Hi <span th:text="${username}"></span></p>
-  </div>
+  <h1>Janken GAME!</h1>
 
+  <!-- ログインユーザー名の表示 -->
+  <p>Hi <span sec:authentication="name"></span></p>
+
+  <!-- じゃんけんの手のリンク -->
+  <a href="/janken?hand=Gu">ぐー</a>
+  <a href="/janken?hand=Choki">ちょき</a>
+  <a href="/janken?hand=Pa">ぱー</a>
 </body>
 
 </html>
