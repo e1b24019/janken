@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
   <meta charset="UTF-8">
@@ -7,27 +7,19 @@
 </head>
 
 <body>
-  <h1>じゃんけん</h1>
+  <!-- ログアウトリンク -->
+  <a href="/logout">ログアウト</a>
 
-  <!-- タスク1：ユーザ名表示 -->
-  <div th:if="${username != null}">
-    <p>Hi <span th:text="${username}"></span></p>
-  </div>
+  <h1>Janken GAME!</h1>
 
-  <!-- タスク2：対戦用リンク（追加） -->
-  <ul>
-    <li><a href="/janken?hand=Gu">グー</a></li>
-    <li><a href="/janken?hand=Choki">チョキ</a></li>
-    <li><a href="/janken?hand=Pa">パー</a></li>
-  </ul>
+  <!-- ログインユーザー名の表示 -->
+  <p>Hi <span sec:authentication="name"></span></p>
 
-  <!-- タスク2：対戦結果表示（追加） -->
-  <div th:if="${janken != null}">
-    <p>あなたの手： <span th:text="${janken.myHand}"></span></p>
-    <p>相手の手： <span th:text="${janken.cpuHand}"></span></p>
-    <p>結果： <span th:text="${janken.result}"></span></p>
-  </div>
-
+  <!-- じゃんけんの手のリンク -->
+  <a href="/janken?hand=Gu">ぐー</a>
+  <a href="/janken?hand=Choki">ちょき</a>
+  <a href="/janken?hand=Pa">ぱー</a>
 </body>
 
 </html>
+
