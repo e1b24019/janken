@@ -10,4 +10,8 @@ public interface UserMapper {
   @Select("SELECT id, name FROM users;")
   ArrayList<User> selectAllUsers();
 
+  // ★ idを利用して特定のUserオブジェクトを取得するメソッドを追加
+  @Select("SELECT id, name FROM users WHERE id = #{id};")
+  User selectById(int id);
+
 }
