@@ -13,9 +13,9 @@
 
       <h2>エントリー</h2>
       <ul>
-        <!-- DBから取得したusersリストを繰り返し表示 -->
+        <!-- ★ ユーザー名をリンクにし、idをパラメータとして埋め込む -->
         <li th:each="user : ${users}">
-          <span th:text="${user.name}">CPU</span>
+          <a th:href="@{/match(id=${user.id})}"> [[${user.name}]]</a>
         </li>
       </ul>
 
