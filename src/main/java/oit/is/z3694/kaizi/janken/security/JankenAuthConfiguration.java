@@ -46,14 +46,16 @@ public class JankenAuthConfiguration {
     // ハッシュ化せずに平文でパスワードを指定する場合は{noop}をつける
 
     UserDetails user1 = User.withUsername("user1")
-        .password("{bcrypt}$2y$05$7l6hcvgCKbMZ5gQ8xlCTtO3m5kd2tAS9zGppcGQwJYPb6ohjGQZte").roles("USER").build();// isdev
+        .password("{bcrypt}$2y$05$0nw.vj2VgciB8kX9A8et9eEqzybTbJXXBiUS11IsTarTORTr76QiO").roles("USER").build();// isdev
     UserDetails user2 = User.withUsername("user2")
-        .password("{bcrypt}$2y$05$7l6hcvgCKbMZ5gQ8xlCTtO3m5kd2tAS9zGppcGQwJYPb6ohjGQZte").roles("USER").build();// isdev
+        .password("{bcrypt}$2y$05$GUv2ofYOesUg/51zRsZ.G.bZJen8125ML7mm1iQMxjXnZa6xVbigu").roles("USER").build();// isdev
+    UserDetails user3 = User.withUsername("ほんだ")
+        .password("{bcrypt}$2y$05$xIcDcEgxA62Nm.Q9FwQ1/ODVU1z8VCCi6TrQCCS.2QQV/qmvHTeSe").roles("USER").build();
     // UserDetails admin = User.withUsername("admin")
     // .password("{bcrypt}$2y$05$VCivUnmJLU9R96BZZHXl/u.0SFcFvWZJm/36yGZMk/Hu0zPUNAGHy").roles("ADMIN").build();//9012
 
     // 生成したユーザをImMemoryUserDetailsManagerに渡す（いくつでも良い）
-    return new InMemoryUserDetailsManager(user1, user2);
+    return new InMemoryUserDetailsManager(user1, user2,user3);
   }
 
 }
