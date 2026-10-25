@@ -28,8 +28,14 @@ public class JankenAuthConfiguration {
             .logoutSuccessUrl("/")) // ログアウト後にトップページ (/) にリダイレクト
         .authorizeHttpRequests(authz -> authz
             .requestMatchers("/janken/**").authenticated() // /janken以下は認証が必要
-            .anyRequest().permitAll()); // 上記以外（トップページ等）は全員アクセス可能
+            .anyRequest().permitAll()) // 上記以外（トップページ等）は全員アクセス可能
 
+            // h2-consoleへのアクセスでCSRF対策を無効化
+        .csrf(csrf -> csrf
+            .ignoringRequestMatchers("/h2-console/**")) //
+        // H2 Console画面のフレーム表示を許可 (sameOrigin)[cite: 10, 34]
+        .headers(headers -> headers
+            .frameOptions(frameOptions -> frameOptions.sameOrigin())); //[cite: 10, 34]
     return http.build();
   }
 
