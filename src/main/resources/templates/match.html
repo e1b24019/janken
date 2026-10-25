@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
   <meta charset="UTF-8">
@@ -7,8 +7,27 @@
 </head>
 
 <body>
-  <!-- ログインユーザーと対戦相手の名前を表示 -->
-  <h2><span th:text="${#authentication.name}">ほんだ</span> V.S. <span th:text="${opponent.name}">CPU</span></h2>
+  <a th:href="@{/logout}">ログアウト</a>
+  <h1>Match</h1>
+
+  <h2><span th:text="${#authentication.name}"></span> V.S. <span th:text="${opponent.name}">CPU</span></h2>
+
+  <!-- ★ じゃんけんの手のリンク -->
+  <p>
+    <a th:href="@{/fight(id=${opponent.id}, hand='Gu')}">ぐー</a>
+    <a th:href="@{/fight(id=${opponent.id}, hand='Choki')}">ちょき</a>
+    <a th:href="@{/fight(id=${opponent.id}, hand='Pa')}">ぱー</a>
+  </p>
+
+  <!-- ★ じゃんけんの手を選択したときのみ表示される結果欄 -->
+  <div th:if="${myHand}">
+    <p>あなたの手 <span th:text="${myHand}">Gu</span></p>
+    <p>相手の手 <span th:text="${cpuHand}">Gu</span></p>
+    <p>結果 <span th:text="${result}"></span></p>
+  </div>
+
+  <!-- ★ janken.html に戻るリンク -->
+  <p><a href="/janken">もどる</a></p>
 </body>
 
 </html>
