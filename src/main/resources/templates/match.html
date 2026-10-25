@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/schema/security">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Match</title>
+</head>
+
+<body>
+  <!-- ログインユーザーと対戦相手の名前を表示 -->
+  <h2><span th:text="${#authentication.name}">ほんだ</span> V.S. <span th:text="${opponent.name}">CPU</span></h2>
+</body>
+
+</html>
