@@ -18,6 +18,16 @@
           <span th:text="${user.name}">CPU</span>
         </li>
       </ul>
+
+      <!-- ★ 試合結果表示セクションの追加 -->
+      <h2>試合結果</h2>
+      <div th:each="m : ${matches}">
+        id:<span th:text="${m.id}">1</span>
+        user1:<span th:text="${m.user1}">2</span>
+        user2:<span th:text="${m.user2}">1</span>
+        user1の手:<span th:text="${m.user1Hand}">Gu</span>
+        user2の手:<span th:text="${m.user2Hand}">Choki</span>
+      </div>
 </body>
 
 </html>
