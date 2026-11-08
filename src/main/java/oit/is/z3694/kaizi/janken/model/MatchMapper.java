@@ -9,11 +9,11 @@ import org.apache.ibatis.annotations.Select;
 @Mapper
 public interface MatchMapper {
 
-  @Select("SELECT id, user1, user2, user1Hand, user2Hand FROM matches;")
+  @Select("SELECT id, user1, user2, user1Hand, user2Hand, isActive FROM matches;")
   ArrayList<Match> selectAllMatches();
 
   // ★ 試合結果をmatchesテーブルに登録するメソッドを追加
-  @Insert("INSERT INTO matches (user1, user2, user1Hand, user2Hand) VALUES (#{user1}, #{user2}, #{user1Hand}, #{user2Hand});")
+  @Insert("INSERT INTO matches (user1, user2, user1Hand, user2Hand, isActive) VALUES (#{user1}, #{user2}, #{user1Hand}, #{user2Hand}, #{isActive});")
   @Options(useGeneratedKeys = true, keyProperty = "id")
   void insertMatch(Match match);
 
