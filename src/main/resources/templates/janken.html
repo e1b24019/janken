@@ -19,6 +19,18 @@
         </li>
       </ul>
 
+      <h2>アクティブな試合</h2>
+      <div th:each="activeMatch : ${activeMatches}">
+        id:<span th:text="${activeMatch.id}">1</span>
+        user1:<span th:text="${activeMatch.user1}">1</span>
+        user2:<span th:text="${activeMatch.user2}">2</span>
+        user1の手:<span th:text="${activeMatch.user1Hand}">Gu</span>
+        isActive:<span th:text="${activeMatch.isActive}">true</span>
+      </div>
+
+
+
+
       <!-- ★ 試合結果表示セクションの追加 -->
       <h2>試合結果</h2>
       <div th:each="m : ${matches}">
@@ -29,5 +41,9 @@
         user2の手:<span th:text="${m.user2Hand}">Choki</span>
       </div>
 </body>
+
+<div>
+  <a th:href="@{/logout}">ログアウト</a>
+</div>
 
 </html>
