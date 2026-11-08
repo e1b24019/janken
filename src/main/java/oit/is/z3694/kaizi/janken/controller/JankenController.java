@@ -76,17 +76,36 @@ public class JankenController {
       String loginUserStr = prin.getName();
       model.addAttribute("login_user", loginUserStr);
 
-      // ログインユーザーのUserオブジェクトを取得
       User loginUser = userMapper.selectByName(loginUserStr);
+      int myId = loginUser.getId();
+      int opponentId = id;
 
-      // matchinfo テーブルへ登録するインスタンス作成
-      MatchInfo matchInfo = new MatchInfo();
-      matchInfo.setUser1(loginUser.getId());
-      matchInfo.setUser2(id);
-      matchInfo.setUser1Hand(hand);
-      matchInfo.setIsActive(true); // アクティブ状態に設定
+      // 1. 相手が先手として待機中かチェック (user1=相手ID, user2=自分ID, isActive=TRUE)
+      MatchInfo activeMatchInfo = matchInfoMapper.selectActiveMatchInfoByUser1AndUser2(opponentId, myId);
 
-      matchInfoMapper.insertMatchInfo(matchInfo);
+      if (activeMatchInfo != null) {
+        // 【後手：試合成立】
+        // matches に結果を挿入 (isActive = true)
+        Match match = new Match();
+        match.setUser1(opponentId);
+        match.setUser2(myId);
+        match.setUser1Hand(activeMatchInfo.getUser1Hand());
+        match.setUser2Hand(hand);
+        match.setIsActive(true);
+        matchMapper.insertMatch(match);
+
+        // matchinfo の待機フラグを解除 (isActive = FALSE)
+        matchInfoMapper.updateActiveToFalse(activeMatchInfo.getId());
+
+      } else {
+        // 【先手：待機登録】 (Task 2 の処理)
+        MatchInfo matchInfo = new MatchInfo();
+        matchInfo.setUser1(myId);
+        matchInfo.setUser2(opponentId);
+        matchInfo.setUser1Hand(hand);
+        matchInfo.setIsActive(true);
+        matchInfoMapper.insertMatchInfo(matchInfo);
+      }
     }
 
     return "wait.html";
