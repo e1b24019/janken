@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import oit.is.z3694.kaizi.janken.model.Janken;
 import oit.is.z3694.kaizi.janken.model.Match;
@@ -16,6 +17,7 @@ import oit.is.z3694.kaizi.janken.model.MatchInfoMapper;
 import oit.is.z3694.kaizi.janken.model.User; // ★ 追加
 import oit.is.z3694.kaizi.janken.model.UserMapper; // ★ 追加
 import oit.is.z3694.kaizi.janken.model.MatchMapper;
+import oit.is.z3694.kaizi.janken.service.AsyncKekka;
 
 @Controller
 public class JankenController {
@@ -28,6 +30,9 @@ public class JankenController {
 
   @Autowired
   private MatchInfoMapper matchInfoMapper; // ★ task2追加:
+
+  @Autowired
+  private AsyncKekka asyncKekka; // ★ task4追加
 
   @GetMapping("/janken")
   public String jankenGet(@RequestParam(name = "hand", required = false) String hand, Principal prin, ModelMap model) {
@@ -97,6 +102,7 @@ public class JankenController {
         // matchinfo の待機フラグを解除 (isActive = FALSE)
         matchInfoMapper.updateActiveToFalse(activeMatchInfo.getId());
 
+
       } else {
         // 【先手：待機登録】 (Task 2 の処理)
         MatchInfo matchInfo = new MatchInfo();
@@ -145,5 +151,16 @@ public class JankenController {
     model.addAttribute("result", result);
 
     return "match.html";
+  }
+
+  // ★ task4: 自分の試合結果をSSEで非同期受信するエンドポイント
+  @GetMapping("/waitResult")
+  public SseEmitter waitResult(Principal prin) {
+    final SseEmitter sseEmitter = new SseEmitter(Long.MAX_VALUE);
+    if (prin != null) {
+      User loginUser = userMapper.selectByName(prin.getName());
+      this.asyncKekka.asyncShowMatchResult(sseEmitter, loginUser.getId());
+    }
+    return sseEmitter;
   }
 }
