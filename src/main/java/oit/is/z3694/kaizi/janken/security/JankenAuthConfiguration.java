@@ -30,12 +30,12 @@ public class JankenAuthConfiguration {
             .requestMatchers("/janken/**").authenticated() // /janken以下は認証が必要
             .anyRequest().permitAll()) // 上記以外（トップページ等）は全員アクセス可能
 
-            // h2-consoleへのアクセスでCSRF対策を無効化
+        // h2-consoleへのアクセスでCSRF対策を無効化
         .csrf(csrf -> csrf
             .ignoringRequestMatchers("/h2-console/**")) //
         // H2 Console画面のフレーム表示を許可 (sameOrigin)[cite: 10, 34]
         .headers(headers -> headers
-            .frameOptions(frameOptions -> frameOptions.sameOrigin())); //[cite: 10, 34]
+            .frameOptions(frameOptions -> frameOptions.sameOrigin())); // [cite: 10, 34]
     return http.build();
   }
 
@@ -56,12 +56,14 @@ public class JankenAuthConfiguration {
     UserDetails user2 = User.withUsername("user2")
         .password("{bcrypt}$2y$05$GUv2ofYOesUg/51zRsZ.G.bZJen8125ML7mm1iQMxjXnZa6xVbigu").roles("USER").build();// isdev
     UserDetails user3 = User.withUsername("ほんだ")
-        .password("{bcrypt}$2y$05$xIcDcEgxA62Nm.Q9FwQ1/ODVU1z8VCCi6TrQCCS.2QQV/qmvHTeSe").roles("USER").build();
+        .password("{bcrypt}$2y$05$pKW26tTBmMQKltHdhT1d6OxlQuZYxi.0lCtZdAS46wA/atPypk6Sa").roles("USER").build();// isdev
+    UserDetails user4 = User.withUsername("いがき")
+        .password("{bcrypt}$2y$05$DEL0oJ2xzFwMK75cz7hJU.Dba3TN5d9N8WkdhMyO23jcse5IWR6x6").roles("USER").build();
     // UserDetails admin = User.withUsername("admin")
     // .password("{bcrypt}$2y$05$VCivUnmJLU9R96BZZHXl/u.0SFcFvWZJm/36yGZMk/Hu0zPUNAGHy").roles("ADMIN").build();//9012
 
     // 生成したユーザをImMemoryUserDetailsManagerに渡す（いくつでも良い）
-    return new InMemoryUserDetailsManager(user1, user2,user3);
+    return new InMemoryUserDetailsManager(user1, user2, user3, user4);
   }
 
 }
