@@ -2,13 +2,37 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <title>Wait</title>
+  <script>
+    window.onload = function () {
+      // SSE 受信処理の設定
+      var sse = new EventSource('/waitResult');
+      sse.onmessage = function (event) {
+        var match = JSON.parse(event.data);
+        var resultArea = document.getElementById("result_area");
+
+        // 試合結果と戻るリンクの組み立て
+        var htmlContent = "<h2>試合結果</h2>";
+        htmlContent += "<p>Match: id " + match.id + " user1: " + match.user1 + " user2: " + match.user2 + " user1Hand: " + match.user1Hand + " user2Hand: " + match.user2Hand + "</p>";
+        htmlContent += "<p><a href='/janken'>[戻る]</a></p>";
+
+        resultArea.innerHTML = htmlContent;
+
+        // 受信完了後にSSE接続を閉じる
+        sse.close();
+      };
+    };
+  </script>
 </head>
 
 <body>
+  <a th:href="@{/logout}">ログアウト</a>
   <h1>相手の手を待ってます</h1>
-  <h2>Hi <span th:text="${login_user}"></span></h2>
+  <h2>Hi <span th:text="${#authentication.name}"></span></h2>
+
+  <!-- ★ 非同期で結果と戻るリンクが挿入される領域 -->
+  <div id="result_area"></div>
 </body>
 
 </html>
