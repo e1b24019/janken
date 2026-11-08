@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import oit.is.z3694.kaizi.janken.model.Janken;
 import oit.is.z3694.kaizi.janken.model.Match;
+import oit.is.z3694.kaizi.janken.model.MatchInfo;
+import oit.is.z3694.kaizi.janken.model.MatchInfoMapper;
 import oit.is.z3694.kaizi.janken.model.User; // ★ 追加
 import oit.is.z3694.kaizi.janken.model.UserMapper; // ★ 追加
 import oit.is.z3694.kaizi.janken.model.MatchMapper;
@@ -23,6 +25,9 @@ public class JankenController {
 
   @Autowired
   private MatchMapper matchMapper;
+
+  @Autowired
+  private MatchInfoMapper matchInfoMapper; // ★ task2追加:
 
   @GetMapping("/janken")
   public String jankenGet(@RequestParam(name = "hand", required = false) String hand, Principal prin, ModelMap model) {
@@ -43,6 +48,14 @@ public class JankenController {
     ArrayList<User> users = userMapper.selectAllUsers();
     model.addAttribute("users", users);
 
+    // ★ task2追加: DBから全試合結果(matches)を取得
+    ArrayList<Match> matches = matchMapper.selectAllMatches();
+    model.addAttribute("matches", matches);
+
+    // ★ task2追加: アクティブな試合(isActive = true)を取得して Model に登録
+    ArrayList<MatchInfo> activeMatches = matchInfoMapper.selectActiveMatchInfo();
+    model.addAttribute("activeMatches", activeMatches);
+
     return "janken.html";
   }
 
@@ -54,6 +67,29 @@ public class JankenController {
     model.addAttribute("opponent", opponent);
 
     return "match.html";
+  }
+
+  // ★ task2追加: 手を選んだ後に wait.html に遷移し matchinfo テーブルへ INSERT するメソッド
+  @GetMapping("/wait")
+  public String wait(@RequestParam("id") int id, @RequestParam("hand") String hand, Principal prin, ModelMap model) {
+    if (prin != null) {
+      String loginUserStr = prin.getName();
+      model.addAttribute("login_user", loginUserStr);
+
+      // ログインユーザーのUserオブジェクトを取得
+      User loginUser = userMapper.selectByName(loginUserStr);
+
+      // matchinfo テーブルへ登録するインスタンス作成
+      MatchInfo matchInfo = new MatchInfo();
+      matchInfo.setUser1(loginUser.getId());
+      matchInfo.setUser2(id);
+      matchInfo.setUser1Hand(hand);
+      matchInfo.setIsActive(true); // アクティブ状態に設定
+
+      matchInfoMapper.insertMatchInfo(matchInfo);
+    }
+
+    return "wait.html";
   }
 
   // ★ じゃんけんの試合実行と結果登録処理を追加
